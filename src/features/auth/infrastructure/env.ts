@@ -10,6 +10,11 @@ export type AuthAccount = {
   sub: string;
 };
 
+function normalizeBcryptHash(value: string) {
+  // Allow storing hashes as `\$2a\$12\$...` in `.env.local` to avoid dotenv expansion.
+  return value.replace(/\\\$/g, "$");
+}
+
 function requiredEnv(name: string) {
   const value = process.env[name];
   if (!value) throw new Error(`Missing required env var: ${name}`);
@@ -18,9 +23,11 @@ function requiredEnv(name: string) {
 
 export function getAuthAccounts(): AuthAccount[] {
   const userEmail = requiredEnv("USER_EMAIL");
-  const userPasswordHash = requiredEnv("USER_PASSWORD_HASH");
+  const userPasswordHash = normalizeBcryptHash(requiredEnv("USER_PASSWORD_HASH"));
   const adminEmail = requiredEnv("ADMIN_EMAIL");
-  const adminPasswordHash = requiredEnv("ADMIN_PASSWORD_HASH");
+  const adminPasswordHash = normalizeBcryptHash(
+    requiredEnv("ADMIN_PASSWORD_HASH"),
+  );
 
   const userName = process.env.USER_NAME || "User";
   const adminName = process.env.ADMIN_NAME || "Admin";

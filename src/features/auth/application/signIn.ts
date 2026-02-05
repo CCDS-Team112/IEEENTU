@@ -18,7 +18,17 @@ export async function signIn(
     return { error: "Email and password are required." };
   }
 
-  const accounts = getAuthAccounts();
+  let accounts: ReturnType<typeof getAuthAccounts>;
+  try {
+    accounts = getAuthAccounts();
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Auth misconfigured.";
+    return {
+      error:
+        "Auth is not configured. Check `.env.local` (bcrypt hashes must escape `$` as `\\$`). " +
+        message,
+    };
+  }
   const account = accounts.find(
     (a) => a.email.toLowerCase() === email.toLowerCase(),
   );
