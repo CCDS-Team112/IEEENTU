@@ -5,7 +5,7 @@ import { verifyPassword } from "@/features/auth/infrastructure/password";
 import { setSessionCookie } from "@/features/auth/infrastructure/sessionCookie";
 import { findUserByEmail } from "@/features/auth/infrastructure/userRepository";
 
-export type SignInState = { error: string | null };
+export type SignInState = { error: string | null; redirectTo?: string | null };
 
 function isNextRedirectError(error: unknown) {
   return (
@@ -25,7 +25,7 @@ export async function signIn(
   const password = String(formData.get("password") ?? "");
 
   if (!email || !password) {
-    return { error: "Email and password are required." };
+    return { error: "Email and password are required.", redirectTo: null };
   }
 
   try {
@@ -51,6 +51,26 @@ export async function signIn(
       error:
         "Sign-in is unavailable. Check `MONGODB_URI` and `SESSION_SECRET` in `.env.local`. " +
         message,
+      redirectTo: null,
     };
   }
+  const account = accounts.find(
+    (a) => a.email.toLowerCase() === email.toLowerCase(),
+  );
+
+  if (!account) {
+    return { error: "Invalid email or password.", redirectTo: null };
+  }
+
+  const ok = await verifyPassword(password, account.passwordHash);
+  if (!ok) {
+    return { error: "Invalid email or password.", redirectTo: null };
+  }
+
+  await setSessionCookie({
+    sub: account.sub,
+    name: account.name,
+    role: account.role,
+  });
+  return { error: null, redirectTo: "/home" };
 }

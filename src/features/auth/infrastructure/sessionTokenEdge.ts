@@ -4,7 +4,7 @@ import { hmacSha256Base64UrlWeb, safeEqualWeb } from "@/shared/lib/hmac-web";
 export type SessionPayload = {
   sub: string;
   name: string;
-  role: "USER" | "ADMIN";
+  role: "USER" | "ADMIN" | "DOCTOR";
 };
 
 export async function verifySessionTokenEdge(
@@ -32,11 +32,10 @@ export async function verifySessionTokenEdge(
 
     const { sub, name, role } = payload as Record<string, unknown>;
     if (typeof sub !== "string" || typeof name !== "string") return null;
-    if (role !== "USER" && role !== "ADMIN") return null;
+    if (role !== "USER" && role !== "ADMIN" && role !== "DOCTOR") return null;
 
     return { sub, name, role };
   } catch {
     return null;
   }
 }
-
