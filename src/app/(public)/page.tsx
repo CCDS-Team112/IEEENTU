@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Card, CardDescription, CardTitle } from "@/shared/ui/Card";
 import { Button } from "@/shared/ui/Button";
+import { ContactDoctor } from "./ContactDoctor";
 
 export default function LandingPage() {
   return (
@@ -104,6 +105,14 @@ export default function LandingPage() {
             and font scaling in action.
           </p>
         </Card>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="text-lg font-semibold">Contact Doctor</h2>
+        <p className="text-sm text-[color:var(--fg)]/80">
+          Book a 15-minute virtual consultation and get a Google Meet link.
+        </p>
+        <ContactDoctor />
       </section>
     </div>
   );

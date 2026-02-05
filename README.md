@@ -52,6 +52,36 @@ npm run dev
 
 Open `http://localhost:3000`.
 
+## Contact Doctor (Sprint 1)
+
+The Contact Doctor flow creates a Google Calendar event with a Google Meet link,
+sends the link via email, and stores the appointment in a JSON file.
+
+### Required env vars
+
+Add these to `.env.local`:
+
+```bash
+GOOGLE_OAUTH_CLIENT_ID=your-oauth-client-id
+GOOGLE_OAUTH_CLIENT_SECRET=your-oauth-client-secret
+GOOGLE_OAUTH_REFRESH_TOKEN=your-refresh-token
+GOOGLE_CALENDAR_ID=thechampions.intuition@gmail.com
+```
+
+Notes:
+- Google Calendar sends invitations directly to attendee emails.
+
+### Google Calendar setup (OAuth)
+
+1. Create a Google Cloud project and enable the Google Calendar API.
+2. Create an OAuth Client ID (Desktop or Web).
+3. Generate a refresh token for your Google account with the scope:
+   `https://www.googleapis.com/auth/calendar`.
+4. Set `GOOGLE_CALENDAR_ID` to the organizer email (your Gmail).
+
+### Appointment storage
+
+Appointments are stored at `data/appointments.json` after the first booking.
 ## Health Chat Test Page
 
 1. Add your Gemini key to `.env.local`:
