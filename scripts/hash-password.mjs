@@ -10,5 +10,7 @@ if (!password) {
 }
 
 const hash = bcrypt.hashSync(password, rounds);
-// Wrap in single-quotes to prevent dotenv variable expansion on `$...`.
-console.log(`'${hash}'`);
+// Next.js loads `.env.local` with dotenv expansion. Bcrypt hashes contain `$...`,
+// which can be treated as variable expansion. Escape `$` so it's safe to paste.
+const escapedForDotenvExpand = hash.replace(/\$/g, "\\$");
+console.log(escapedForDotenvExpand);

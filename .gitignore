@@ -32,9 +32,7 @@ Thumbs.db
 !.vscode/tasks.json
 
 # env files (secrets)
-.env
-.env.*.local
-.env.local
+
 
 # TypeScript
 *.tsbuildinfo
