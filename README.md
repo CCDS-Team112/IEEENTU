@@ -64,3 +64,9 @@ src/
     accessibility/
   shared/
 ```
+
+## MongoDB:
+
+Username: transonviet2004_db_user
+password: a7jMVpEXRmW4SpDt
+mongo_uri: mongodb+srv://transonviet2004_db_user:a7jMVpEXRmW4SpDt@cluster0.u918sfq.mongodb.net/?appName=Cluster0
