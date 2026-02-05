@@ -9,34 +9,41 @@ Accessibility-first Next.js skeleton with:
 
 ## Setup
 
+Install dependencies:
+
 ```bash
 npm install
 ```
 
-Configure local credentials in `.env.local`.
-
-Required env vars:
+Run commands from the project folder (the one containing `package.json`), e.g.:
 
 ```bash
-SESSION_SECRET=dev-only-change-me
-
-USER_EMAIL=user@example.com
-USER_NAME=Sample User
-USER_PASSWORD_HASH=\$2a\$12\$...
-
-ADMIN_EMAIL=admin@example.com
-ADMIN_NAME=Sample Admin
-ADMIN_PASSWORD_HASH=\$2a\$12\$...
+cd "C:\Users\hname\OneDrive\Desktop\IEEE Hackathon\my-hackathon-app"
 ```
 
-Generate a bcrypt hash:
+Create a `.env.local` (never commit secrets):
+
+```bash
+SESSION_SECRET=dev-only-change-me-to-a-long-random-string
+MONGODB_URI=mongodb+srv://...
+MONGODB_DB=access_starter
+```
+
+## Create users (MongoDB)
+
+Users are stored in MongoDB (not in env). Generate a bcrypt hash:
 
 ```bash
 npm run hash:password -- "your password here"
 ```
 
-Paste the output into `.env.local` exactly as printed (it escapes `$` as `\$` to
-avoid Next’s dotenv expansion).
+Seed a user into MongoDB:
+
+```bash
+npm run seed:user -- --email "user@example.com" --name "Sample User" --role USER --password-hash "<paste hash here>"
+```
+
+Repeat with `--role ADMIN` for an admin account.
 
 ## Run
 
@@ -64,9 +71,3 @@ src/
     accessibility/
   shared/
 ```
-
-## MongoDB:
-
-Username: transonviet2004_db_user
-password: a7jMVpEXRmW4SpDt
-mongo_uri: mongodb+srv://transonviet2004_db_user:a7jMVpEXRmW4SpDt@cluster0.u918sfq.mongodb.net/?appName=Cluster0

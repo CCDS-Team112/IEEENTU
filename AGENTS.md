@@ -21,6 +21,7 @@ Use npm (lockfile: `package-lock.json`).
 - `npm start`: run the production server (requires `npm run build`).
 - `npm run lint`: run ESLint (Next.js core-web-vitals + TypeScript).
 - `npm run hash:password -- "<password>" [rounds]`: generate a bcrypt hash for `.env.local` (paste as-is; it escapes `$`).
+- `npm run seed:user -- --email "<email>" --name "<name>" --role USER|ADMIN --password-hash "<hash>"`: create a MongoDB user record for local login.
 
 ## Coding Style & Naming Conventions
 
