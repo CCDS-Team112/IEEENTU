@@ -1,127 +1,171 @@
-“Contact Doctor” with auto Meet link
+Sprint 1 minimal: Symptom intake function (with AI support)
 
-Add UI entry point
+Goal
 
-After showing symptom-check result, display a primary button: “Contact doctor”
+Collect a user’s symptoms quickly and safely, then produce a structured record that can be used for rule based triage and for a doctor summary.
 
-Clicking opens an Appointment booking screen
+User flows
 
-Appointment booking screen (minimal)
+Flow A: Form intake (no AI)
 
-Inputs:
+User taps Symptom check
 
-User email (required, validate format)
+User fills a short form
 
-Slot picker: show a short list of preconfigured next 5 available slots
+App runs rule based triage and shows next steps
 
-Constraints:
+Save session
 
-One doctor calendar only (single clinic account calendar)
+Flow B: AI assisted intake
 
-Fixed duration: 15 minutes
+User taps AI help
 
-CTA: Confirm appointment
+User types or speaks symptoms
 
-Slot generation (minimal)
+AI asks a few fixed follow up questions
 
-Backend provides “next 5 slots” for the clinic calendar (simple implementation OK):
+App shows a review screen with fields pre filled
 
-Generate from a configured schedule (e.g., predefined times) OR
+User confirms
 
-Compute next 5 15-min blocks from “now” within configured clinic hours
+App runs rule based triage and shows next steps
 
-Ensure chosen slot is still available at booking time (basic conflict check)
+Save session
 
-Create calendar event (backend)
+Minimal fields to collect
 
-When user confirms:
+Required
 
-Create a calendar event on the clinic calendar with:
+Age band: under 3 months, 3 to 12 months, 1 to 12 years, 13 to 64, 65 plus
 
-Title: “Virtual consultation”
+Main symptom(s): choose from list plus optional free text
 
-Start/end: selected slot start + start+15m
+Duration: hours or days
 
-Attendee: user email
+Severity: mild, moderate, severe
 
-Description: symptom check summary (include AI doctor summary if available)
+Red flag checks (yes or no)
 
-Google Meet conferencing enabled (auto-generate Meet link)
+trouble breathing
 
-Return to client:
+chest pain
 
-Meet link
+fainting or confusion
 
-Calendar event id
+severe bleeding
 
-Persist appointment record
+one sided weakness or face droop or speech trouble
 
-Store an Appointment row/document with:
+severe allergic reaction signs
+
+Optional
+
+Temperature if fever
+
+Meds taken for this issue
+
+Known conditions relevant
+
+Pregnancy status
+
+Screen requirements
+
+Symptom selection screen
+
+Searchable list of common symptoms
+
+Add free text
+
+Details screen
+
+Duration input
+
+Severity selector
+
+Optional vitals
+
+Safety screen
+
+Red flag checklist with plain language examples
+
+Review screen
+
+Summary of answers
+
+Edit button
+
+Submit button
+
+AI assisted questioning (minimal)
+
+Use only approved questions, in this order
+
+Age band
+
+What symptoms are you having
+
+How long has this been going on
+
+How bad is it
+
+Red flag questions one by one
+
+Optional: temperature if fever mentioned
+
+AI output must be structured
+
+symptoms array
+
+duration value and unit
+
+severity enum
+
+red flags boolean map
+
+suggested vitals to request
+
+Data saved
+
+SymptomCheck
 
 id
 
-user_email
+user id or guest id
 
-slot_start_time
+created time
 
-slot_end_time
+symptoms list
 
-meet_link
+free text note
 
-calendar_event_id
+duration value and unit
 
-created_time
+severity
 
-status = "confirmed"
+red flags map
 
-Email the user (minimal)
+vitals list optional
 
-After event creation, send an email to user_email containing:
+triage category
 
-Meet link
+guidance text
 
-Time slot
+ai summary optional
 
-Basic instructions (“Click link at time of appointment”)
+Validation rules
 
-If email fails but event was created:
+Must have at least one symptom
 
-Still show Meet link on screen and mark appointment confirmed
+Duration must be positive and within a sane max (for example less than 365 days)
 
-Log email failure for retry/manual follow-up (no reschedule logic)
+If age under 3 months and fever is present, mark as urgent
 
-Confirmation screen
+If any red flag is true, triage must be emergency now
 
-Show:
+Success criteria
 
-Appointment time
+Form completion under 2 minutes median
 
-Meet link (clickable + copy button)
+AI assisted completion under 3 minutes median
 
-“Appointment confirmed” state
-
-Error handling
-
-If slot is no longer available: prompt user to pick another slot (refresh list)
-
-If calendar event creation fails: show “Couldn’t book—try again” + allow fallback to normal flow
-
-If AI is slow/unavailable, booking must still work using rule-based symptom summary
-
-API endpoints (suggested minimal)
-
-GET /appointments/slots → returns next 5 slots (start/end)
-
-POST /appointments body: { userEmail, slotStartTime, symptomSummaryText }
-
-response: { appointmentId, calendarEventId, meetLink, slotStartTime, slotEndTime }
-
-Demo success metric
-
-From symptom result → confirmed Meet link displayed in under 1 minute
-
-Optimize for speed: prefetch slots, keep calls minimal, show loading + fast failure messages
-
-Explicitly out of scope
-
-Payments, multiple doctors, reschedule/cancel, chat, insurance
+Saved record always contains the required fields
