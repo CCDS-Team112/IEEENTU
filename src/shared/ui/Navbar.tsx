@@ -11,60 +11,72 @@ export function Navbar(props: {
   return (
     <header
       className={cn(
-        "border-b border-[color:var(--border)] bg-[color:var(--bg)]",
+        "sticky top-0 z-40 border-b border-border bg-background/80 backdrop-blur",
         props.className,
       )}
     >
-      <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-3 px-4 py-4">
-        <nav aria-label="Primary" className="flex items-center gap-4">
+      <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-4 py-4">
+        <div className="flex items-center gap-4">
           <Link
             href="/"
-            className="rounded-lg text-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--focus)]"
+            className="rounded-full border border-border px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground"
           >
-            Access Starter
+            Careline
           </Link>
-          {props.session ? (
-            <Link
-              href="/home"
-              className="rounded-lg text-sm underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--focus)]"
-            >
-              Home
-            </Link>
-          ) : (
-            <>
-              <Link
-                href="/login"
-                className="rounded-lg text-sm underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--focus)]"
-              >
-                Log in
-              </Link>
-              <Link
-                href="/register"
-                className="rounded-lg text-sm underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--focus)]"
-              >
-                Register
-              </Link>
-            </>
-          )}
-        </nav>
+          <nav aria-label="Primary" className="flex items-center gap-4 text-sm">
+            {props.session ? (
+              <>
+                <Link
+                  href="/home"
+                  className="rounded-full px-3 py-1 font-medium text-foreground transition hover:bg-accent"
+                >
+                  Dashboard
+                </Link>
+                <Link
+                  href="/health-records"
+                  className="rounded-full px-3 py-1 font-medium text-foreground transition hover:bg-accent"
+                >
+                  Health Records
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link
+                  href="/login"
+                  className="rounded-full px-3 py-1 font-medium text-foreground transition hover:bg-accent"
+                >
+                  Log in
+                </Link>
+                <Link
+                  href="/register"
+                  className="rounded-full px-3 py-1 font-medium text-foreground transition hover:bg-accent"
+                >
+                  Register
+                </Link>
+              </>
+            )}
+          </nav>
+        </div>
 
-        <div className="flex flex-wrap items-center justify-end gap-3">
+        <div className="flex flex-wrap items-center gap-3">
           <A11yToolbar />
           {props.session ? (
-            <Link
-              href="/health-records"
-              className="inline-flex min-h-11 items-center justify-center rounded-xl border border-[color:var(--border)] bg-[color:var(--bg)] px-4 py-2 text-sm font-medium text-[color:var(--fg)] hover:bg-[color:var(--muted)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--focus)] motion-reduce:transition-none sm:transition-colors"
-            >
-              Health Records
-            </Link>
+            <div className="flex items-center gap-2 rounded-full border border-border bg-muted px-3 py-1 text-xs font-semibold text-muted-foreground">
+              {props.session.name}
+              <span className="text-foreground">{props.session.role}</span>
+            </div>
           ) : null}
           {props.session ? (
             <form action={signOut}>
-              <Button type="submit" variant="secondary">
-                Sign out ({props.session.role})
+              <Button type="submit" variant="outline" size="sm">
+                Sign out
               </Button>
             </form>
-          ) : null}
+          ) : (
+            <Link href="/login">
+              <Button size="sm">Get started</Button>
+            </Link>
+          )}
         </div>
       </div>
     </header>

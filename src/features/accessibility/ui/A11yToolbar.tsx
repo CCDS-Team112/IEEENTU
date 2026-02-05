@@ -23,7 +23,7 @@ function applyPreferences(preferences: AccessibilityPreferences) {
 
 export function A11yToolbar() {
   const [preferences, setPreferences] = useState<AccessibilityPreferences>(() =>
-    loadPreferences(),
+    loadPreferences() ?? defaultPreferences,
   );
 
   useEffect(() => {
@@ -43,11 +43,12 @@ export function A11yToolbar() {
   return (
     <section
       aria-label="Accessibility settings"
-      className="flex flex-wrap items-center gap-3"
+      className="flex flex-wrap items-center gap-2"
     >
       <Button
         type="button"
-        variant="secondary"
+        variant="ghost"
+        size="sm"
         onClick={() =>
           update({
             ...preferences,
@@ -60,7 +61,8 @@ export function A11yToolbar() {
       </Button>
       <Button
         type="button"
-        variant="secondary"
+        variant="ghost"
+        size="sm"
         onClick={() =>
           update({
             ...preferences,
@@ -69,7 +71,7 @@ export function A11yToolbar() {
           })
         }
       >
-        Font size: {fontPercent}%
+        Text: {fontPercent}%
       </Button>
     </section>
   );

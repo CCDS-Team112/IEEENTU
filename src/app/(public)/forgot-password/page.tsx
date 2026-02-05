@@ -4,28 +4,36 @@ import { Card, CardDescription, CardTitle } from "@/shared/ui/Card";
 
 export default function ForgotPasswordPage() {
   return (
-    <div className="space-y-6">
-      <header className="space-y-2">
-        <h1 className="text-2xl font-bold">Forgot password</h1>
-        <p className="text-sm text-[color:var(--fg)]/80">
+    <div className="grid gap-8 lg:grid-cols-[1.2fr_1fr]">
+      <section className="space-y-4">
+        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
+          Password reset
+        </p>
+        <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+          Let’s get you back in.
+        </h1>
+        <p className="text-base text-muted-foreground">
+          We will generate a secure reset link. In development it prints to your
+          terminal.
+        </p>
+        <p className="text-sm text-muted-foreground">
           Remembered it?{" "}
           <Link
             href="/login"
-            className="underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--focus)]"
+            className="font-semibold text-foreground underline-offset-4 hover:underline"
           >
             Back to login
           </Link>
           .
         </p>
-      </header>
+      </section>
 
       <Card className="max-w-md">
         <CardTitle>Create reset link</CardTitle>
         <CardDescription>
-          In development, the reset link is printed to the terminal running{" "}
-          <code>npm run dev</code>.
+          Use the emailed link to choose a new password.
         </CardDescription>
-        <div className="mt-4">
+        <div className="mt-6">
           <ForgotPasswordForm />
         </div>
       </Card>

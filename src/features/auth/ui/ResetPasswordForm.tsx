@@ -13,12 +13,19 @@ export function ResetPasswordForm(props: { token: string }) {
   const [state, action, isPending] = useActionState(resetPassword, initialState);
 
   return (
-    <form action={action} className="space-y-4" noValidate>
+    <form action={action} className="space-y-5" noValidate>
       <input type="hidden" name="token" value={props.token} />
 
       <div className="space-y-2">
         <Label htmlFor="password">New password</Label>
-        <Input id="password" name="password" type="password" autoComplete="new-password" required />
+        <Input
+          id="password"
+          name="password"
+          type="password"
+          autoComplete="new-password"
+          placeholder="At least 8 characters"
+          required
+        />
       </div>
 
       <div className="space-y-2">
@@ -28,6 +35,7 @@ export function ResetPasswordForm(props: { token: string }) {
           name="confirmPassword"
           type="password"
           autoComplete="new-password"
+          placeholder="Repeat password"
           required
         />
       </div>
@@ -36,10 +44,9 @@ export function ResetPasswordForm(props: { token: string }) {
         {state.error ? <Alert variant="error">{state.error}</Alert> : null}
       </div>
 
-      <Button type="submit" disabled={isPending} className="w-full">
+      <Button type="submit" disabled={isPending} className="w-full" size="lg">
         {isPending ? "Updating password…" : "Update password"}
       </Button>
     </form>
   );
 }
-

@@ -1,29 +1,37 @@
 import { cn } from "@/shared/lib/cn";
 
-type ButtonVariant = "primary" | "secondary";
+type ButtonVariant = "primary" | "secondary" | "outline" | "ghost";
+type ButtonSize = "default" | "sm" | "lg";
 
 export function Button(
   props: React.ButtonHTMLAttributes<HTMLButtonElement> & {
     variant?: ButtonVariant;
+    size?: ButtonSize;
   },
 ) {
-  const { className, variant = "primary", ...rest } = props;
+  const { className, variant = "primary", size = "default", ...rest } = props;
 
   return (
     <button
       className={cn(
-        "inline-flex min-h-11 items-center justify-center rounded-xl border px-4 py-2 text-sm font-medium",
-        "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--focus)]",
+        "inline-flex items-center justify-center rounded-full border text-sm font-semibold transition",
+        "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
         "disabled:pointer-events-none disabled:opacity-50",
+        size === "default" && "min-h-11 px-5",
+        size === "sm" && "min-h-9 px-4 text-xs",
+        size === "lg" && "min-h-12 px-6 text-base",
         variant === "primary" &&
-          "border-transparent bg-[color:var(--primary)] text-[color:var(--primary-fg)]",
+          "border-transparent bg-primary text-primary-foreground shadow-sm hover:opacity-90",
         variant === "secondary" &&
-          "border-[color:var(--border)] bg-[color:var(--bg)] text-[color:var(--fg)] hover:bg-[color:var(--muted)]",
-        "motion-reduce:transition-none sm:transition-colors",
+          "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        variant === "outline" &&
+          "border-border bg-background text-foreground hover:bg-accent",
+        variant === "ghost" &&
+          "border-transparent bg-transparent text-foreground hover:bg-accent",
+        "motion-reduce:transition-none",
         className,
       )}
       {...rest}
     />
   );
 }
-

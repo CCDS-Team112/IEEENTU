@@ -23,7 +23,7 @@ export function ForgotPasswordForm() {
   );
 
   return (
-    <form action={action} className="space-y-4" noValidate>
+    <form action={action} className="space-y-5" noValidate>
       <div className="space-y-2">
         <Label htmlFor="email">Email</Label>
         <Input
@@ -32,6 +32,7 @@ export function ForgotPasswordForm() {
           type="email"
           inputMode="email"
           autoComplete="email"
+          placeholder="you@clinic.com"
           required
         />
       </div>
@@ -45,7 +46,7 @@ export function ForgotPasswordForm() {
         </Alert>
       </div>
 
-      <Button type="submit" disabled={isPending} className="w-full">
+      <Button type="submit" disabled={isPending} className="w-full" size="lg">
         {isPending ? "Creating reset link…" : "Create reset link"}
       </Button>
     </form>
