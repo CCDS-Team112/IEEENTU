@@ -1,86 +1,109 @@
 import Link from "next/link";
 import { Card, CardDescription, CardTitle } from "@/shared/ui/Card";
+import { Button } from "@/shared/ui/Button";
 
 export default function LandingPage() {
   return (
-    <div className="space-y-8">
-      <section className="space-y-4">
-        <p className="text-sm font-medium text-[color:var(--fg)]/80">
-          Accessibility-first Next.js starter
-        </p>
-        <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-          Access Starter
-        </h1>
-        <p className="max-w-2xl text-[color:var(--fg)]/90">
-          A minimal, production-shaped skeleton with authentication, protected
-          routes, and built-in accessibility controls.
-        </p>
-
-        <div className="flex flex-wrap gap-3">
-          <Link
-            href="/login"
-            className="inline-flex min-h-11 items-center justify-center rounded-xl border border-transparent bg-[color:var(--primary)] px-4 py-2 text-sm font-medium text-[color:var(--primary-fg)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--focus)] motion-reduce:transition-none sm:transition-opacity hover:opacity-90"
-          >
-            Log in
-          </Link>
-          <a
-            href="/api/health"
-            className="min-h-11 rounded-xl border border-[color:var(--border)] px-4 py-2 text-sm font-medium underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--focus)]"
-          >
-            Health check
-          </a>
+    <div className="space-y-12">
+      <section className="relative overflow-hidden rounded-[32px] border border-border bg-grid p-8 shadow-[0_25px_60px_-45px_rgba(15,23,42,0.55)] sm:p-12">
+        <div className="absolute inset-0 bg-gradient-to-br from-white/70 via-white/40 to-transparent" />
+        <div className="relative space-y-6">
+          <div className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-3 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
+            Modern Clinic Portal
+          </div>
+          <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
+            Careline makes every patient touchpoint feel human.
+          </h1>
+          <p className="max-w-2xl text-base text-muted-foreground sm:text-lg">
+            A competition-ready healthcare experience with secure access,
+            intelligent summaries, and a timeline that helps patients understand
+            their care.
+          </p>
+          <div className="flex flex-wrap gap-3">
+            <Link href="/login">
+              <Button size="lg">Log in</Button>
+            </Link>
+            <Link href="/register">
+              <Button variant="outline" size="lg">
+                Create account
+              </Button>
+            </Link>
+            <a
+              href="/api/health"
+              className="inline-flex min-h-12 items-center justify-center rounded-full border border-border px-6 text-sm font-semibold text-foreground transition hover:bg-accent"
+            >
+              Health check
+            </a>
+          </div>
         </div>
       </section>
 
       <section className="grid gap-6 md:grid-cols-3">
         <Card>
-          <CardTitle>High contrast</CardTitle>
+          <CardTitle>Accessible by design</CardTitle>
           <CardDescription>
-            Toggle a high-contrast theme that improves readability.
+            High-contrast mode and adaptive text scaling keep every screen clear
+            and readable.
           </CardDescription>
         </Card>
         <Card>
-          <CardTitle>Font scaling</CardTitle>
+          <CardTitle>Unified health timeline</CardTitle>
           <CardDescription>
-            Cycle font size (100%, 115%, 130%) and persist it across refresh.
+            Pulls symptom checks, doctor notes, and appointments into one
+            effortless story.
           </CardDescription>
         </Card>
         <Card>
-          <CardTitle>Keyboard-first</CardTitle>
+          <CardTitle>Secure, fast, reliable</CardTitle>
           <CardDescription>
-            Strong focus rings, skip link, and semantic landmarks.
+            Signed sessions, protected routes, and MongoDB-backed persistence
+            keep data safe.
           </CardDescription>
         </Card>
       </section>
 
-      <section className="space-y-2">
-        <h2 className="text-lg font-semibold">Quick links</h2>
-        <ul className="list-disc pl-5 text-sm">
-          <li>
+      <section className="grid gap-6 md:grid-cols-2">
+        <Card className="flex flex-col justify-between">
+          <div>
+            <CardTitle>Instant navigation</CardTitle>
+            <CardDescription>
+              Jump directly to login, register, or health records with one click.
+            </CardDescription>
+          </div>
+          <div className="mt-6 flex flex-wrap gap-3 text-sm">
             <Link
               href="/login"
-              className="underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--focus)]"
+              className="rounded-full border border-border px-4 py-2 font-semibold text-foreground transition hover:bg-accent"
             >
               Log in
             </Link>
-          </li>
-          <li>
             <Link
               href="/register"
-              className="underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--focus)]"
+              className="rounded-full border border-border px-4 py-2 font-semibold text-foreground transition hover:bg-accent"
             >
               Create account
             </Link>
-          </li>
-          <li>
             <Link
               href="/home"
-              className="underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--focus)]"
+              className="rounded-full border border-border px-4 py-2 font-semibold text-foreground transition hover:bg-accent"
             >
-              Home (protected)
+              View dashboard
             </Link>
-          </li>
-        </ul>
+          </div>
+        </Card>
+        <Card className="flex flex-col justify-between">
+          <div>
+            <CardTitle>Designed for competition</CardTitle>
+            <CardDescription>
+              Strong visual hierarchy, clean typography, and a modern clinic
+              palette make every view feel premium.
+            </CardDescription>
+          </div>
+          <p className="mt-6 text-sm text-muted-foreground">
+            Tip: Toggle the accessibility toolbar in the header to see contrast
+            and font scaling in action.
+          </p>
+        </Card>
       </section>
     </div>
   );

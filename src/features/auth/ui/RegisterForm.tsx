@@ -13,10 +13,10 @@ export function RegisterForm() {
   const [state, action, isPending] = useActionState(signUp, initialState);
 
   return (
-    <form action={action} className="space-y-4" noValidate>
+    <form action={action} className="space-y-5" noValidate>
       <div className="space-y-2">
         <Label htmlFor="name">Name</Label>
-        <Input id="name" name="name" autoComplete="name" required />
+        <Input id="name" name="name" autoComplete="name" placeholder="Alex Doe" required />
       </div>
 
       <div className="space-y-2">
@@ -27,6 +27,7 @@ export function RegisterForm() {
           type="email"
           inputMode="email"
           autoComplete="email"
+          placeholder="you@clinic.com"
           required
         />
       </div>
@@ -38,6 +39,7 @@ export function RegisterForm() {
           name="password"
           type="password"
           autoComplete="new-password"
+          placeholder="At least 8 characters"
           required
         />
       </div>
@@ -49,6 +51,7 @@ export function RegisterForm() {
           name="confirmPassword"
           type="password"
           autoComplete="new-password"
+          placeholder="Repeat password"
           required
         />
       </div>
@@ -57,10 +60,9 @@ export function RegisterForm() {
         {state.error ? <Alert variant="error">{state.error}</Alert> : null}
       </div>
 
-      <Button type="submit" disabled={isPending} className="w-full">
+      <Button type="submit" disabled={isPending} className="w-full" size="lg">
         {isPending ? "Creating account…" : "Create account"}
       </Button>
     </form>
   );
 }
-

@@ -5,6 +5,7 @@ import type { AppointmentDetail } from "@/features/health-records/domain/types";
 import { getSession } from "@/features/auth/application/getSession";
 import { getCollections, toIsoString } from "@/db/health-records";
 import { Card, CardDescription, CardTitle } from "@/shared/ui/Card";
+import { Button } from "@/shared/ui/Button";
 
 function formatDateTime(value: string | null) {
   if (!value) return "Unknown time";
@@ -66,27 +67,24 @@ export default async function AppointmentDetailPage({
   };
 
   return (
-    <div className="space-y-6">
-      <Link href="/health-records" className="text-sm underline-offset-4 hover:underline">
+    <div className="space-y-8">
+      <Link
+        href="/health-records"
+        className="text-sm font-semibold text-foreground underline-offset-4 hover:underline"
+      >
         Back to health records
       </Link>
 
       <Card>
         <CardTitle>Appointment</CardTitle>
         <CardDescription>Scheduled {formatDateTime(item.dateTime)}.</CardDescription>
-        <div className="mt-4 space-y-2 text-sm">
-          <p>
-            <span className="text-[color:var(--fg)]/70">Status:</span>{" "}
+        <div className="mt-4 flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
+          <span className="rounded-full border border-border bg-background px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em]">
             {item.status ?? "Unspecified"}
-          </p>
+          </span>
           {item.joinUrl ? (
-            <a
-              href={item.joinUrl}
-              className="inline-flex text-sm underline-offset-4 hover:underline"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Join meeting
+            <a href={item.joinUrl} target="_blank" rel="noreferrer">
+              <Button size="sm">Join meeting</Button>
             </a>
           ) : null}
         </div>
@@ -94,29 +92,35 @@ export default async function AppointmentDetailPage({
 
       <section className="grid gap-4 md:grid-cols-3">
         <Card>
-          <p className="text-sm text-[color:var(--fg)]/70">Status</p>
-          <p className="text-lg font-semibold">{item.status ?? "Unspecified"}</p>
+          <p className="text-sm text-muted-foreground">Status</p>
+          <p className="text-lg font-semibold text-foreground">
+            {item.status ?? "Unspecified"}
+          </p>
         </Card>
         <Card>
-          <p className="text-sm text-[color:var(--fg)]/70">Join link</p>
-          <p className="text-lg font-semibold">{item.joinUrl ? "Available" : "Not set"}</p>
+          <p className="text-sm text-muted-foreground">Join link</p>
+          <p className="text-lg font-semibold text-foreground">
+            {item.joinUrl ? "Available" : "Not set"}
+          </p>
         </Card>
         <Card>
-          <p className="text-sm text-[color:var(--fg)]/70">Notes</p>
-          <p className="text-lg font-semibold">{item.notes ? "Provided" : "None"}</p>
+          <p className="text-sm text-muted-foreground">Notes</p>
+          <p className="text-lg font-semibold text-foreground">
+            {item.notes ? "Provided" : "None"}
+          </p>
         </Card>
       </section>
 
       <section className="space-y-3">
         <h2 className="text-lg font-semibold">Notes</h2>
-        <p className="text-sm text-[color:var(--fg)]/80">
+        <p className="text-sm text-muted-foreground">
           {item.notes ?? "No notes available."}
         </p>
       </section>
 
       <section className="space-y-3">
         <h2 className="text-lg font-semibold">Record data</h2>
-        <pre className="whitespace-pre-wrap rounded-xl border border-[color:var(--border)] bg-[color:var(--muted)] p-4 text-xs text-[color:var(--fg)]">
+        <pre className="whitespace-pre-wrap rounded-2xl border border-border bg-muted p-4 text-xs text-muted-foreground">
           {JSON.stringify(item, null, 2)}
         </pre>
       </section>

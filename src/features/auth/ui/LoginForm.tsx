@@ -22,7 +22,7 @@ export function LoginForm() {
   }, [state.redirectTo, router]);
 
   return (
-    <form action={action} className="space-y-4" noValidate>
+    <form action={action} className="space-y-5" noValidate>
       <div className="space-y-2">
         <Label htmlFor="email">Email</Label>
         <Input
@@ -31,6 +31,7 @@ export function LoginForm() {
           type="email"
           inputMode="email"
           autoComplete="email"
+          placeholder="you@clinic.com"
           required
         />
       </div>
@@ -42,6 +43,7 @@ export function LoginForm() {
           name="password"
           type="password"
           autoComplete="current-password"
+          placeholder="••••••••"
           required
         />
       </div>
@@ -50,20 +52,20 @@ export function LoginForm() {
         {state.error ? <Alert variant="error">{state.error}</Alert> : null}
       </div>
 
-      <Button type="submit" disabled={isPending} className="w-full">
+      <Button type="submit" disabled={isPending} className="w-full" size="lg">
         {isPending ? "Signing in…" : "Sign in"}
       </Button>
 
       <div className="flex flex-wrap items-center justify-between gap-3 text-sm">
         <Link
           href="/register"
-          className="underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--focus)]"
+          className="font-semibold text-foreground underline-offset-4 hover:underline"
         >
           Create account
         </Link>
         <Link
           href="/forgot-password"
-          className="underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--focus)]"
+          className="font-semibold text-foreground underline-offset-4 hover:underline"
         >
           Forgot password?
         </Link>

@@ -10,14 +10,12 @@ export function Alert(
       role={variant === "error" ? "alert" : "status"}
       {...rest}
       className={cn(
-        "rounded-xl border p-3 text-sm",
+        "rounded-2xl border px-4 py-3 text-sm",
         variant === "error" &&
-          "border-red-300 bg-red-50 text-red-900 dark:border-red-500/40 dark:bg-red-500/10",
-        variant === "info" &&
-          "border-[color:var(--border)] bg-[color:var(--muted)] text-[color:var(--fg)]",
+          "border-destructive/30 bg-destructive/10 text-destructive",
+        variant === "info" && "border-border bg-muted text-foreground",
         className,
       )}
     />
   );
 }
-

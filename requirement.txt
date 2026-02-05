@@ -1,67 +1,127 @@
-Page: Health Records
-Purpose: One place for the user to view all saved health records retrieved from the database.
+“Contact Doctor” with auto Meet link
 
-Sections
-Self symptom submissions
+Add UI entry point
 
-List of submitted symptom checks (date, top symptoms, triage level)
+After showing symptom-check result, display a primary button: “Contact doctor”
 
-Click item to open detail (answers, red flags, guidance, AI summary)
+Clicking opens an Appointment booking screen
 
-Doctor health records
+Appointment booking screen (minimal)
 
-List of doctor notes or consultation records (date, doctor name, visit type)
+Inputs:
 
-Click item to open detail (diagnosis note optional, plan, prescriptions optional, attachments optional)
+User email (required, validate format)
 
-Appointments
+Slot picker: show a short list of preconfigured next 5 available slots
 
-List of booked virtual consults (date time, status, join link)
+Constraints:
 
-Join button opens the Meet link
+One doctor calendar only (single clinic account calendar)
 
-Backend requirements
-APIs
-GET /health-records/overview
+Fixed duration: 15 minutes
 
-returns counts and latest items per section
+CTA: Confirm appointment
 
-GET /health-records/symptom-checks?limit=&cursor=
+Slot generation (minimal)
 
-GET /health-records/doctor-records?limit=&cursor=
+Backend provides “next 5 slots” for the clinic calendar (simple implementation OK):
 
-GET /health-records/appointments?limit=&cursor=
+Generate from a configured schedule (e.g., predefined times) OR
 
-GET /health-records/symptom-checks/{id}
+Compute next 5 15-min blocks from “now” within configured clinic hours
 
-GET /health-records/doctor-records/{id}
+Ensure chosen slot is still available at booking time (basic conflict check)
 
-GET /health-records/appointments/{id}
+Create calendar event (backend)
 
-Optional for Sprint 1 if doctor records are created by staff only
+When user confirms:
 
-POST /doctor-records (protected admin or doctor role)
+Create a calendar event on the clinic calendar with:
 
-Access control (must)
-All GET endpoints must filter by authenticated user_id
+Title: “Virtual consultation”
 
-Doctor records write endpoint must require doctor or admin role
+Start/end: selected slot start + start+15m
 
-Never allow querying another user’s records by id without ownership checks
+Attendee: user email
 
-Frontend behavior
-Add a Health Records page in navigation
+Description: symptom check summary (include AI doctor summary if available)
 
-Use tabs or three cards:
+Google Meet conferencing enabled (auto-generate Meet link)
 
-Symptom submissions
+Return to client:
 
-Doctor records
+Meet link
 
-Appointments
+Calendar event id
 
-Each section loads from its GET endpoint (server side pagination)
+Persist appointment record
 
-Detail drawer or separate detail page for each record type
+Store an Appointment row/document with:
 
-I also have mongodb database in the readme.md file can you also implement and work on my real database also 
+id
+
+user_email
+
+slot_start_time
+
+slot_end_time
+
+meet_link
+
+calendar_event_id
+
+created_time
+
+status = "confirmed"
+
+Email the user (minimal)
+
+After event creation, send an email to user_email containing:
+
+Meet link
+
+Time slot
+
+Basic instructions (“Click link at time of appointment”)
+
+If email fails but event was created:
+
+Still show Meet link on screen and mark appointment confirmed
+
+Log email failure for retry/manual follow-up (no reschedule logic)
+
+Confirmation screen
+
+Show:
+
+Appointment time
+
+Meet link (clickable + copy button)
+
+“Appointment confirmed” state
+
+Error handling
+
+If slot is no longer available: prompt user to pick another slot (refresh list)
+
+If calendar event creation fails: show “Couldn’t book—try again” + allow fallback to normal flow
+
+If AI is slow/unavailable, booking must still work using rule-based symptom summary
+
+API endpoints (suggested minimal)
+
+GET /appointments/slots → returns next 5 slots (start/end)
+
+POST /appointments body: { userEmail, slotStartTime, symptomSummaryText }
+
+response: { appointmentId, calendarEventId, meetLink, slotStartTime, slotEndTime }
+
+Demo success metric
+
+From symptom result → confirmed Meet link displayed in under 1 minute
+
+Optimize for speed: prefetch slots, keep calls minimal, show loading + fast failure messages
+
+Explicitly out of scope
+
+Payments, multiple doctors, reschedule/cancel, chat, insurance

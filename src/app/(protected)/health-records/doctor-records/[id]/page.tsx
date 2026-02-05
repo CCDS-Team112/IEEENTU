@@ -63,51 +63,64 @@ export default async function DoctorRecordDetailPage({
   };
 
   return (
-    <div className="space-y-6">
-      <Link href="/health-records" className="text-sm underline-offset-4 hover:underline">
+    <div className="space-y-8">
+      <Link
+        href="/health-records"
+        className="text-sm font-semibold text-foreground underline-offset-4 hover:underline"
+      >
         Back to health records
       </Link>
 
       <Card>
         <CardTitle>Doctor record</CardTitle>
         <CardDescription>Visit on {formatDate(item.date)}.</CardDescription>
-        <div className="mt-4 space-y-2 text-sm">
-          <p>
-            <span className="text-[color:var(--fg)]/70">Doctor:</span>{" "}
-            {item.doctorName ?? "Unspecified"}
-          </p>
-          <p>
-            <span className="text-[color:var(--fg)]/70">Visit type:</span>{" "}
-            {item.visitType ?? "Unspecified"}
-          </p>
+        <div className="mt-4 grid gap-3 text-sm text-muted-foreground sm:grid-cols-2">
+          <div>
+            <p className="text-xs uppercase tracking-[0.2em]">Doctor</p>
+            <p className="mt-1 text-base font-semibold text-foreground">
+              {item.doctorName ?? "Unspecified"}
+            </p>
+          </div>
+          <div>
+            <p className="text-xs uppercase tracking-[0.2em]">Visit type</p>
+            <p className="mt-1 text-base font-semibold text-foreground">
+              {item.visitType ?? "Unspecified"}
+            </p>
+          </div>
         </div>
       </Card>
 
       <section className="grid gap-4 md:grid-cols-3">
         <Card>
-          <p className="text-sm text-[color:var(--fg)]/70">Doctor</p>
-          <p className="text-lg font-semibold">{item.doctorName ?? "Unspecified"}</p>
+          <p className="text-sm text-muted-foreground">Doctor</p>
+          <p className="text-lg font-semibold text-foreground">
+            {item.doctorName ?? "Unspecified"}
+          </p>
         </Card>
         <Card>
-          <p className="text-sm text-[color:var(--fg)]/70">Visit type</p>
-          <p className="text-lg font-semibold">{item.visitType ?? "Unspecified"}</p>
+          <p className="text-sm text-muted-foreground">Visit type</p>
+          <p className="text-lg font-semibold text-foreground">
+            {item.visitType ?? "Unspecified"}
+          </p>
         </Card>
         <Card>
-          <p className="text-sm text-[color:var(--fg)]/70">Prescriptions</p>
-          <p className="text-lg font-semibold">{item.prescriptions.length}</p>
+          <p className="text-sm text-muted-foreground">Prescriptions</p>
+          <p className="text-lg font-semibold text-foreground">
+            {item.prescriptions.length}
+          </p>
         </Card>
       </section>
 
       <section className="space-y-3">
         <h2 className="text-lg font-semibold">Diagnosis note</h2>
-        <p className="text-sm text-[color:var(--fg)]/80">
+        <p className="text-sm text-muted-foreground">
           {item.diagnosisNote ?? "No diagnosis note saved."}
         </p>
       </section>
 
       <section className="space-y-3">
         <h2 className="text-lg font-semibold">Plan</h2>
-        <p className="text-sm text-[color:var(--fg)]/80">
+        <p className="text-sm text-muted-foreground">
           {item.plan ?? "No plan recorded."}
         </p>
       </section>
@@ -115,11 +128,14 @@ export default async function DoctorRecordDetailPage({
       <section className="space-y-3">
         <h2 className="text-lg font-semibold">Prescriptions</h2>
         {item.prescriptions.length === 0 ? (
-          <p className="text-sm text-[color:var(--fg)]/70">No prescriptions listed.</p>
+          <p className="text-sm text-muted-foreground">No prescriptions listed.</p>
         ) : (
-          <div className="space-y-2 text-sm">
+          <div className="grid gap-2 text-sm">
             {item.prescriptions.map((prescription) => (
-              <div key={prescription} className="rounded-xl border border-[color:var(--border)] p-3">
+              <div
+                key={prescription}
+                className="rounded-2xl border border-border bg-background/70 p-3"
+              >
                 {prescription}
               </div>
             ))}
@@ -130,11 +146,14 @@ export default async function DoctorRecordDetailPage({
       <section className="space-y-3">
         <h2 className="text-lg font-semibold">Attachments</h2>
         {item.attachments.length === 0 ? (
-          <p className="text-sm text-[color:var(--fg)]/70">No attachments.</p>
+          <p className="text-sm text-muted-foreground">No attachments.</p>
         ) : (
-          <div className="space-y-2 text-sm">
+          <div className="grid gap-2 text-sm">
             {item.attachments.map((attachment) => (
-              <div key={attachment} className="rounded-xl border border-[color:var(--border)] p-3">
+              <div
+                key={attachment}
+                className="rounded-2xl border border-border bg-background/70 p-3"
+              >
                 {attachment}
               </div>
             ))}
@@ -144,7 +163,7 @@ export default async function DoctorRecordDetailPage({
 
       <section className="space-y-3">
         <h2 className="text-lg font-semibold">Record data</h2>
-        <pre className="whitespace-pre-wrap rounded-xl border border-[color:var(--border)] bg-[color:var(--muted)] p-4 text-xs text-[color:var(--fg)]">
+        <pre className="whitespace-pre-wrap rounded-2xl border border-border bg-muted p-4 text-xs text-muted-foreground">
           {JSON.stringify(item, null, 2)}
         </pre>
       </section>
