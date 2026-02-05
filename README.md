@@ -24,9 +24,8 @@ cd "C:\Users\hname\OneDrive\Desktop\IEEE Hackathon\my-hackathon-app"
 Create a `.env.local` (never commit secrets):
 
 ```bash
-SESSION_SECRET=dev-only-change-me-to-a-long-random-string
-MONGODB_URI=mongodb+srv://...
-MONGODB_DB=access_starter
+USER_EMAIL=user@example.com
+USER_PASSWORD=password
 ```
 
 ## Create users (MongoDB)

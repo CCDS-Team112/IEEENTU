@@ -66,6 +66,14 @@ export default function LandingPage() {
           </li>
           <li>
             <Link
+              href="/register"
+              className="underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--focus)]"
+            >
+              Create account
+            </Link>
+          </li>
+          <li>
+            <Link
               href="/home"
               className="underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--focus)]"
             >

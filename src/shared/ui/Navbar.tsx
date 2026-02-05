@@ -31,12 +31,20 @@ export function Navbar(props: {
               Home
             </Link>
           ) : (
-            <Link
-              href="/login"
-              className="rounded-lg text-sm underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--focus)]"
-            >
-              Log in
-            </Link>
+            <>
+              <Link
+                href="/login"
+                className="rounded-lg text-sm underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--focus)]"
+              >
+                Log in
+              </Link>
+              <Link
+                href="/register"
+                className="rounded-lg text-sm underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--focus)]"
+              >
+                Register
+              </Link>
+            </>
           )}
         </nav>
 
