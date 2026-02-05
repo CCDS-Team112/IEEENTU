@@ -4,7 +4,7 @@ import { hmacSha256Base64UrlNode, safeEqualNode } from "@/shared/lib/hmac-node";
 export type SessionPayload = {
   sub: string;
   name: string;
-  role: "USER" | "ADMIN";
+  role: "USER" | "ADMIN" | "DOCTOR";
 };
 
 export function signSessionToken(payload: SessionPayload, secret: string) {
@@ -35,11 +35,10 @@ export function verifySessionToken(token: string, secret: string): SessionPayloa
 
     const { sub, name, role } = payload as Record<string, unknown>;
     if (typeof sub !== "string" || typeof name !== "string") return null;
-    if (role !== "USER" && role !== "ADMIN") return null;
+    if (role !== "USER" && role !== "ADMIN" && role !== "DOCTOR") return null;
 
     return { sub, name, role };
   } catch {
     return null;
   }
 }
-

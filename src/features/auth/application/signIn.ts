@@ -5,7 +5,7 @@ import { getAuthAccounts } from "@/features/auth/infrastructure/env";
 import { verifyPassword } from "@/features/auth/infrastructure/password";
 import { setSessionCookie } from "@/features/auth/infrastructure/sessionCookie";
 
-export type SignInState = { error: string | null };
+export type SignInState = { error: string | null; redirectTo?: string | null };
 
 export async function signIn(
   _prevState: SignInState,
@@ -15,7 +15,7 @@ export async function signIn(
   const password = String(formData.get("password") ?? "");
 
   if (!email || !password) {
-    return { error: "Email and password are required." };
+    return { error: "Email and password are required.", redirectTo: null };
   }
 
   let accounts: ReturnType<typeof getAuthAccounts>;
@@ -27,6 +27,7 @@ export async function signIn(
       error:
         "Auth is not configured. Check `.env.local` (bcrypt hashes must escape `$` as `\\$`). " +
         message,
+      redirectTo: null,
     };
   }
   const account = accounts.find(
@@ -34,12 +35,12 @@ export async function signIn(
   );
 
   if (!account) {
-    return { error: "Invalid email or password." };
+    return { error: "Invalid email or password.", redirectTo: null };
   }
 
   const ok = await verifyPassword(password, account.passwordHash);
   if (!ok) {
-    return { error: "Invalid email or password." };
+    return { error: "Invalid email or password.", redirectTo: null };
   }
 
   await setSessionCookie({
@@ -47,5 +48,5 @@ export async function signIn(
     name: account.name,
     role: account.role,
   });
-  redirect("/home");
+  return { error: null, redirectTo: "/home" };
 }

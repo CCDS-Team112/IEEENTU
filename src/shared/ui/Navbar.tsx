@@ -5,7 +5,7 @@ import { cn } from "@/shared/lib/cn";
 import { Button } from "@/shared/ui/Button";
 
 export function Navbar(props: {
-  session: { name: string; role: "USER" | "ADMIN" } | null;
+  session: { name: string; role: "USER" | "ADMIN" | "DOCTOR" } | null;
   className?: string;
 }) {
   return (
@@ -43,6 +43,14 @@ export function Navbar(props: {
         <div className="flex flex-wrap items-center justify-end gap-3">
           <A11yToolbar />
           {props.session ? (
+            <Link
+              href="/health-records"
+              className="inline-flex min-h-11 items-center justify-center rounded-xl border border-[color:var(--border)] bg-[color:var(--bg)] px-4 py-2 text-sm font-medium text-[color:var(--fg)] hover:bg-[color:var(--muted)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--focus)] motion-reduce:transition-none sm:transition-colors"
+            >
+              Health Records
+            </Link>
+          ) : null}
+          {props.session ? (
             <form action={signOut}>
               <Button type="submit" variant="secondary">
                 Sign out ({props.session.role})
@@ -54,4 +62,3 @@ export function Navbar(props: {
     </header>
   );
 }
-

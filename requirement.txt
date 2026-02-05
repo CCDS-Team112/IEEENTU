@@ -1,0 +1,67 @@
+Page: Health Records
+Purpose: One place for the user to view all saved health records retrieved from the database.
+
+Sections
+Self symptom submissions
+
+List of submitted symptom checks (date, top symptoms, triage level)
+
+Click item to open detail (answers, red flags, guidance, AI summary)
+
+Doctor health records
+
+List of doctor notes or consultation records (date, doctor name, visit type)
+
+Click item to open detail (diagnosis note optional, plan, prescriptions optional, attachments optional)
+
+Appointments
+
+List of booked virtual consults (date time, status, join link)
+
+Join button opens the Meet link
+
+Backend requirements
+APIs
+GET /health-records/overview
+
+returns counts and latest items per section
+
+GET /health-records/symptom-checks?limit=&cursor=
+
+GET /health-records/doctor-records?limit=&cursor=
+
+GET /health-records/appointments?limit=&cursor=
+
+GET /health-records/symptom-checks/{id}
+
+GET /health-records/doctor-records/{id}
+
+GET /health-records/appointments/{id}
+
+Optional for Sprint 1 if doctor records are created by staff only
+
+POST /doctor-records (protected admin or doctor role)
+
+Access control (must)
+All GET endpoints must filter by authenticated user_id
+
+Doctor records write endpoint must require doctor or admin role
+
+Never allow querying another user’s records by id without ownership checks
+
+Frontend behavior
+Add a Health Records page in navigation
+
+Use tabs or three cards:
+
+Symptom submissions
+
+Doctor records
+
+Appointments
+
+Each section loads from its GET endpoint (server side pagination)
+
+Detail drawer or separate detail page for each record type
+
+I also have mongodb database in the readme.md file can you also implement and work on my real database also 

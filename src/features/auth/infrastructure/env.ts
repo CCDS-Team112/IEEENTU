@@ -1,6 +1,6 @@
 import "server-only";
 
-export type AuthRole = "USER" | "ADMIN";
+export type AuthRole = "USER" | "ADMIN" | "DOCTOR";
 
 export type AuthAccount = {
   role: AuthRole;
@@ -31,8 +31,13 @@ export function getAuthAccounts(): AuthAccount[] {
 
   const userName = process.env.USER_NAME || "User";
   const adminName = process.env.ADMIN_NAME || "Admin";
+  const doctorEmail = process.env.DOCTOR_EMAIL;
+  const doctorPasswordHash = process.env.DOCTOR_PASSWORD_HASH
+    ? normalizeBcryptHash(process.env.DOCTOR_PASSWORD_HASH)
+    : null;
+  const doctorName = process.env.DOCTOR_NAME || "Doctor";
 
-  return [
+  const accounts: AuthAccount[] = [
     {
       role: "USER",
       email: userEmail,
@@ -48,6 +53,18 @@ export function getAuthAccounts(): AuthAccount[] {
       sub: "admin",
     },
   ];
+
+  if (doctorEmail && doctorPasswordHash) {
+    accounts.push({
+      role: "DOCTOR",
+      email: doctorEmail,
+      passwordHash: doctorPasswordHash,
+      name: doctorName,
+      sub: "doctor",
+    });
+  }
+
+  return accounts;
 }
 
 export function getSessionSecret() {
