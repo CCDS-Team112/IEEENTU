@@ -22,15 +22,13 @@ function applyPreferences(preferences: AccessibilityPreferences) {
 }
 
 export function A11yToolbar() {
-  const [preferences, setPreferences] = useState<AccessibilityPreferences>(
-    defaultPreferences,
+  const [preferences, setPreferences] = useState<AccessibilityPreferences>(() =>
+    loadPreferences(),
   );
 
   useEffect(() => {
-    const loaded = loadPreferences();
-    setPreferences(loaded);
-    applyPreferences(loaded);
-  }, []);
+    applyPreferences(preferences);
+  }, [preferences]);
 
   const fontPercent = useMemo(() => {
     const scale = FONT_SCALE_OPTIONS[preferences.fontScaleIndex] ?? 1;
@@ -40,7 +38,6 @@ export function A11yToolbar() {
   function update(next: AccessibilityPreferences) {
     setPreferences(next);
     savePreferences(next);
-    applyPreferences(next);
   }
 
   return (
@@ -77,4 +74,3 @@ export function A11yToolbar() {
     </section>
   );
 }
-

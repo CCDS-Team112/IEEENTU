@@ -54,23 +54,4 @@ export async function signIn(
       redirectTo: null,
     };
   }
-  const account = accounts.find(
-    (a) => a.email.toLowerCase() === email.toLowerCase(),
-  );
-
-  if (!account) {
-    return { error: "Invalid email or password.", redirectTo: null };
-  }
-
-  const ok = await verifyPassword(password, account.passwordHash);
-  if (!ok) {
-    return { error: "Invalid email or password.", redirectTo: null };
-  }
-
-  await setSessionCookie({
-    sub: account.sub,
-    name: account.name,
-    role: account.role,
-  });
-  return { error: null, redirectTo: "/home" };
 }

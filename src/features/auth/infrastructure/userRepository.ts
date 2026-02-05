@@ -19,18 +19,27 @@ function usersCollection(db: Awaited<ReturnType<typeof getDb>>) {
   return db.collection<UserRecord>("users");
 }
 
-export async function ensureUserIndexes() {
+let ensuredIndexes: Promise<void> | null = null;
+
+async function ensureUserIndexes() {
   const db = await getDb();
   await usersCollection(db).createIndex({ emailLower: 1 }, { unique: true });
 }
 
+async function ensureReady() {
+  if (!ensuredIndexes) ensuredIndexes = ensureUserIndexes();
+  await ensuredIndexes;
+}
+
 export async function findUserByEmail(email: string) {
+  await ensureReady();
   const db = await getDb();
   const emailLower = email.trim().toLowerCase();
   return await usersCollection(db).findOne({ emailLower });
 }
 
 export async function findUserById(id: string) {
+  await ensureReady();
   const db = await getDb();
   if (!ObjectId.isValid(id)) return null;
   return await usersCollection(db).findOne({ _id: new ObjectId(id) });
@@ -42,6 +51,7 @@ export async function createUser(input: {
   role: AuthRole;
   passwordHash: string;
 }) {
+  await ensureReady();
   const db = await getDb();
   const email = input.email.trim();
   const emailLower = email.toLowerCase();
@@ -59,3 +69,11 @@ export async function createUser(input: {
   return { _id: result.insertedId, ...doc };
 }
 
+export async function updateUserPasswordHash(userId: ObjectId, passwordHash: string) {
+  await ensureReady();
+  const db = await getDb();
+  await usersCollection(db).updateOne(
+    { _id: userId },
+    { $set: { passwordHash } },
+  );
+}

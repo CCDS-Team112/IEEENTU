@@ -3,6 +3,7 @@
 import { useActionState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { signIn, type SignInState } from "@/features/auth/application/signIn";
+import Link from "next/link";
 import { Alert } from "@/shared/ui/Alert";
 import { Button } from "@/shared/ui/Button";
 import { Input } from "@/shared/ui/Input";
@@ -52,6 +53,21 @@ export function LoginForm() {
       <Button type="submit" disabled={isPending} className="w-full">
         {isPending ? "Signing in…" : "Sign in"}
       </Button>
+
+      <div className="flex flex-wrap items-center justify-between gap-3 text-sm">
+        <Link
+          href="/register"
+          className="underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--focus)]"
+        >
+          Create account
+        </Link>
+        <Link
+          href="/forgot-password"
+          className="underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--focus)]"
+        >
+          Forgot password?
+        </Link>
+      </div>
     </form>
   );
 }
