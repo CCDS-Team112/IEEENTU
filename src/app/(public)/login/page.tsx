@@ -7,7 +7,7 @@ export default function LoginPage() {
       <header className="space-y-2">
         <h1 className="text-2xl font-bold">Log in</h1>
         <p className="text-sm text-[color:var(--fg)]/80">
-          Use the credentials configured in <code>.env.local</code>.
+          Use credentials stored in MongoDB.
         </p>
       </header>
 
@@ -21,4 +21,3 @@ export default function LoginPage() {
     </div>
   );
 }
-
