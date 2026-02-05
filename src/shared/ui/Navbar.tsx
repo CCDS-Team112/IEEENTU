@@ -38,6 +38,12 @@ export function Navbar(props: {
                 >
                   Health Records
                 </Link>
+                <Link
+                  href="/symptom-check"
+                  className="rounded-full px-3 py-1 font-medium text-foreground transition hover:bg-accent"
+                >
+                  Symptom check
+                </Link>
               </>
             ) : (
               <>

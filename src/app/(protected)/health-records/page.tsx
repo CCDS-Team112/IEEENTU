@@ -9,6 +9,7 @@ import type {
 import { redirect } from "next/navigation";
 import { getSession } from "@/features/auth/application/getSession";
 import { Card, CardDescription, CardTitle } from "@/shared/ui/Card";
+import { Button } from "@/shared/ui/Button";
 import {
   buildCursorQuery,
   getCollections,
@@ -197,6 +198,11 @@ export default async function HealthRecordsPage({
           Review symptom checks, doctor notes, and appointments in one calm,
           consistent view.
         </p>
+        <div>
+          <Link href="/symptom-check">
+            <Button size="lg">Start symptom check</Button>
+          </Link>
+        </div>
       </header>
 
       <section className="grid gap-4 md:grid-cols-3">

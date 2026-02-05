@@ -26,9 +26,11 @@ export default async function HomePage() {
             <Link href="/health-records">
               <Button size="lg">Open health records</Button>
             </Link>
-            <Button variant="outline" size="lg">
-              Book an appointment
-            </Button>
+            <Link href="/symptom-check">
+              <Button variant="outline" size="lg">
+                Start symptom check
+              </Button>
+            </Link>
           </div>
         </div>
         <Card className="flex flex-col justify-between">

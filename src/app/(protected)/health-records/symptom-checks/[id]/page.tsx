@@ -4,6 +4,7 @@ import { notFound, redirect } from "next/navigation";
 import type { SymptomCheckDetail } from "@/features/health-records/domain/types";
 import { getSession } from "@/features/auth/application/getSession";
 import { getCollections, normalizeStringArray, toIsoString } from "@/db/health-records";
+import { redFlagLabelForKey } from "@/features/symptom-checks/domain/constants";
 import { Card, CardDescription, CardTitle } from "@/shared/ui/Card";
 
 function formatDate(value: string | null) {
@@ -11,6 +12,19 @@ function formatDate(value: string | null) {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return value;
   return new Intl.DateTimeFormat("en-US", { dateStyle: "medium" }).format(date);
+}
+
+function normalizeRedFlags(value: unknown): string[] {
+  if (!value) return [];
+  if (Array.isArray(value)) {
+    return value.filter((item) => typeof item === "string");
+  }
+  if (typeof value === "object") {
+    return Object.entries(value as Record<string, unknown>)
+      .filter(([, flag]) => Boolean(flag))
+      .map(([key]) => redFlagLabelForKey(key));
+  }
+  return [];
 }
 
 function renderKeyValueEntries(entries: [string, unknown][]) {
@@ -81,8 +95,10 @@ export default async function SymptomCheckDetailPage({
       (doc as Record<string, unknown>).answers !== null
         ? ((doc as Record<string, unknown>).answers as Record<string, unknown>)
         : null,
-    redFlags: normalizeStringArray(
-      (doc as Record<string, unknown>).red_flags ?? (doc as Record<string, unknown>).redFlags,
+    redFlags: normalizeRedFlags(
+      (doc as Record<string, unknown>).red_flag_list ??
+        (doc as Record<string, unknown>).red_flags ??
+        (doc as Record<string, unknown>).redFlags,
     ),
     guidance:
       ((doc as Record<string, unknown>).guidance as string) ||

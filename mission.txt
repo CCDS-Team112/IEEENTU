@@ -1,0 +1,102 @@
+Build a Next.js (App Router) + TypeScript test page with chat UI that uses an LLM to parse user text into required symptom intake fields, asks follow-up questions if missing, and shows a review JSON when complete.
+
+Hard requirements
+1) Only add a NEW blank test page route: /health-chat-test (do not modify existing product pages).
+2) Add AI integration ONLY for this test page via a server route handler (app/api/health-intake/route.ts). The UI page calls this API.
+3) Do NOT hardcode keyword parsing rules. Use the LLM to extract fields.
+4) Use Zod schema validation on the server response and on the client to determine missing fields.
+5) Use an environment variable for the API key. Do not commit secrets.
+6) Use explicit consent: show a review JSON and require user to type CONFIRM to “submit” (test mode just resets draft).
+
+LLM provider
+- Use OpenAI Node SDK (recommended). Use a model that supports structured JSON outputs.
+- If OpenAI is used, require env var: OPENAI_API_KEY.
+- The API route should return JSON only.
+
+Data schema (required fields)
+- ageBand: enum ["UNDER_3_MONTHS","MONTHS_3_12","YEARS_1_12","YEARS_13_64","AGE_65_PLUS"]
+- symptoms: string[] (>=1)
+- durationValue: number (>0)
+- durationUnit: enum ["HOURS","DAYS"]
+- severity: enum ["MILD","MODERATE","SEVERE"]
+- redFlags: object with boolean fields:
+  troubleBreathing, chestPain, faintingOrConfusion, severeBleeding, strokeSigns, severeAllergy
+- freeTextNote: string (optional)
+- confidence: number 0..1 (optional)
+
+Behavior
+A) Conversation state
+- Maintain a draft object (partial) in React state.
+- Maintain a queue/order of follow-ups:
+  1) ageBand
+  2) symptoms
+  3) durationValue+durationUnit
+  4) severity
+  5) redFlags (ask each one yes/no)
+- When user sends a message:
+  - If we are currently asking a specific follow-up, interpret the user message as the answer to that question and update the draft directly.
+  - Otherwise, call the AI extraction endpoint with:
+    - userText: the new message
+    - currentDraft: the current draft JSON
+    - instruction: “extract missing fields, do not guess, output null/undefined if unknown”
+  - Merge returned fields into the draft (do not overwrite user-confirmed fields unless the user explicitly changes them).
+
+B) AI extraction endpoint: /api/health-intake
+- Input JSON: { userText: string, currentDraft: Partial<Draft> }
+- Output JSON: { draft: Partial<Draft> }
+- The LLM must:
+  - Fill what it can based on userText and currentDraft
+  - Never invent values (if not stated, return null / omit)
+  - Normalize into allowed enums
+  - For redFlags, only set true if user explicitly indicates it; otherwise leave unchanged or false ONLY if user explicitly says “no” during follow-up.
+- Validate LLM output with Zod on the server. If invalid, return a safe error and do not update draft.
+
+C) Missing fields detection (client)
+- Use Zod or custom checks to compute missing fields:
+  - ageBand missing => ask age band choices
+  - symptoms missing/empty => ask “What are your main symptoms?”
+  - duration missing => ask “How long has this been happening? Reply like 12 hours or 3 days.”
+  - severity missing => ask “mild, moderate, or severe?”
+  - redFlags: ask each yes/no in fixed order. Track which ones have been answered.
+- Ask only one question at a time.
+
+D) Red-flag safety gate (client)
+- If user answers YES to any red flag follow-up:
+  - Immediately show: “This could be urgent. Please seek emergency help now.”
+  - Still allow saving as a record only after CONFIRM (test mode).
+
+E) Review and confirm
+- When all required fields are complete, bot prints:
+  - “Review your intake JSON below. Type CONFIRM to submit.”
+  - Show JSON in a readable panel.
+- If user types CONFIRM:
+  - Show “Submitted (test).”
+  - Reset draft and conversation state.
+
+UI requirements
+- Page: /health-chat-test
+- Simple chat UI:
+  - messages list (user/bot)
+  - input + send
+  - loading indicator while calling /api/health-intake
+- Include a “Current draft” debug panel displaying live draft JSON.
+- Minimal styling ok.
+
+Files to create
+- app/health-chat-test/page.tsx
+- app/api/health-intake/route.ts
+- lib/healthIntakeSchema.ts (Zod schema + types)
+- Optional: lib/missingFields.ts (helper to compute missing and next question)
+
+Implementation notes for OpenAI
+- Use OpenAI Node SDK in the route handler.
+- Use a strict system prompt:
+  - Return JSON only
+  - Follow schema
+  - Do not guess
+  - Only fill fields supported
+- Prefer structured output mode if available. Otherwise parse JSON and validate with Zod.
+
+Also update README or add a short comment explaining:
+- Set OPENAI_API_KEY in .env.local
+- Navigate to /health-chat-test

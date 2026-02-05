@@ -82,6 +82,17 @@ Notes:
 ### Appointment storage
 
 Appointments are stored at `data/appointments.json` after the first booking.
+## Health Chat Test Page
+
+1. Add your Gemini key to `.env.local`:
+
+```bash
+GEMINI_API_KEY=your_key_here
+```
+
+2. Start the app with `npm run dev` and open `http://localhost:3000/health-chat-test`.
+
+This route is test-only and uses `/api/health-intake` to extract intake fields with the Gemini SDK.
 
 ## Repo Structure (high level)
 
